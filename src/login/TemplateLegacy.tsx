@@ -341,7 +341,7 @@ export function Template(props: TemplateProps<KcContext, I18n>) {
                                         onClick={() => {
                                             document.forms[
                                                 "kc-select-try-another-way-form" as never
-                                                ].submit();
+                                            ].submit();
                                             return false;
                                         }}
                                     >

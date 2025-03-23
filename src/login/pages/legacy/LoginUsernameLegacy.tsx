@@ -65,7 +65,7 @@ export default function LoginUsername(
                                     className={kcClsx(
                                         "kcFormSocialAccountListClass",
                                         social.providers.length > 3 &&
-                                        "kcFormSocialAccountListGridClass"
+                                            "kcFormSocialAccountListGridClass"
                                     )}
                                 >
                                     {social.providers.map((...[p, , providers]) => (
@@ -75,7 +75,7 @@ export default function LoginUsername(
                                                 className={kcClsx(
                                                     "kcFormSocialAccountListButtonClass",
                                                     providers.length > 3 &&
-                                                    "kcFormSocialAccountGridItem"
+                                                        "kcFormSocialAccountGridItem"
                                                 )}
                                                 type="button"
                                                 href={p.loginUrl}
@@ -95,7 +95,7 @@ export default function LoginUsername(
                                                             "kcFormSocialAccountNameClass"
                                                         ),
                                                         p.iconClasses &&
-                                                        "kc-social-icon-text"
+                                                            "kc-social-icon-text"
                                                     )}
                                                 >
                                                     {p.displayName}
@@ -130,8 +130,8 @@ export default function LoginUsername(
                                         {!realm.loginWithEmailAllowed
                                             ? msg("username")
                                             : !realm.registrationEmailAsUsername
-                                                ? msg("usernameOrEmail")
-                                                : msg("email")}
+                                              ? msg("usernameOrEmail")
+                                              : msg("email")}
                                     </label>
                                     <input
                                         tabIndex={2}

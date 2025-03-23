@@ -6,7 +6,6 @@ This project is designed to be developer-friendly, making it easy to customize t
 
 I strongly believe in the Keycloak ecosystem and found Keycloakify to be an extremely stable and reliable tool for creating custom Keycloak themes. My goal is to further enhance Keycloakify for this specific front-end use case and to make it easier for others to build on top of my work.
 
-
 [![Watch the video](https://img.youtube.com/vi/xmQ5ULhF1Dk/maxresdefault.jpg)](https://youtu.be/xmQ5ULhF1Dk)
 
 ### [Watch this video on YouTube](https://youtu.be/xmQ5ULhF1Dk)
@@ -18,9 +17,10 @@ If things look a bit off on mobile phones or smaller screens, no worries—we're
 Stay tuned for exciting updates and improvements coming soon!
 
 ## 🌟 Live Demo
+
 You can explore and test the components used in this project through the live Storybook:
 
-[View Storybook](https://nima70.github.io/keycloakify-tailwind-shadcn/storybook/) 
+[View Storybook](https://nima70.github.io/keycloakify-tailwind-shadcn/storybook/)
 
 ## 💡 Why This Project?
 
@@ -33,6 +33,7 @@ Contributions are highly encouraged! Whether you're passionate about Keycloak, T
 ### [Watch this video on YouTube](https://youtu.be/LG5Wv7dsh4I)
 
 ## 🚀 Quick Start
+
 [![Watch the video](https://img.youtube.com/vi/5pBc1C1wgiQ/maxresdefault.jpg)](https://youtu.be/5pBc1C1wgiQ)
 
 ### [Watch this video on YouTube](https://youtu.be/5pBc1C1wgiQ)
@@ -48,6 +49,7 @@ Install dependencies:
 ```bash
 npm install --legacy-peer-deps
 ```
+
 Run the project locally:
 
 ```bash
@@ -59,6 +61,7 @@ npm run storybook
 <img src="./public/docs/storybook-default.gif" alt="Storybook default view"/>
 
 ## Changing the Default Theme
+
 Visit the ShadCN themes website:
 https://ui.shadcn.com/themes
 
@@ -74,9 +77,10 @@ https://ui.shadcn.com/themes
 <img src="./public/docs/updated-theme.png" alt="Updated theme preview"/>
 
 ## Changing a Component
-To modify a component, for example, you can change rounded-md to rounded-full in src/components/button.tsx. Here’s the updated code:
-```typescript
 
+To modify a component, for example, you can change rounded-md to rounded-full in src/components/button.tsx. Here’s the updated code:
+
+```typescript
 const buttonVariants = cva(
     "inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:scale-105",
     {
@@ -106,11 +110,13 @@ const buttonVariants = cva(
     }
 );
 ```
+
 You can verify the changes below:
 
 <img src="./public/docs/button.png" alt="Updated button component"/>
 
 ### Login Page Changes
+
 Below are images of the login page before and after updating the button component.
 
 Before:
@@ -121,9 +127,8 @@ After:
 
 <img src="./public/docs/component-after.png" alt="Login page after update"/>
 
-
-
 ## Install Maven:
+
 You need Maven installed to build and test the Keycloak theme.
 
 macOS:
@@ -146,11 +151,12 @@ choco install openjdk && choco install maven
 
 ## Testing the Component with Docker
 
-
 Run this command:
+
 ```bash
 npx keycloakify start-keycloak
 ```
+
 > ** Note: Keycloak version 26 is not supported yet. **
 
 ## 📦 Building the Keycloak Theme
@@ -160,8 +166,6 @@ npm run build-keycloak-theme
 ```
 
 Keycloakify generates .jar files for different Keycloak versions by default. You can customize this to suit your deployment needs. Learn more in the Keycloakify documentation.
-
-
 
 ## 🛠 Tailwind CSS & ShadCN UI Integration
 

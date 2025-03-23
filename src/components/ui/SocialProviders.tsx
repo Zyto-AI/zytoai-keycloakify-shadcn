@@ -5,13 +5,13 @@ import { kcSanitize } from "keycloakify/lib/kcSanitize";
 export interface SocialProvidersProps {
     social:
         | {
-        providers?: Array<{
-            alias: string;
-            loginUrl: string;
-            displayName: string;
-            iconClasses?: string;
-        }>;
-    }
+              providers?: Array<{
+                  alias: string;
+                  loginUrl: string;
+                  displayName: string;
+                  iconClasses?: string;
+              }>;
+          }
         | undefined;
     kcClsx: (...args: any[]) => string;
     clsx: (...args: any[]) => string;
@@ -22,12 +22,12 @@ export interface SocialProvidersProps {
 }
 
 export const SocialProviders: React.FC<SocialProvidersProps> = ({
-                                                                    social,
-                                                                    kcClsx,
-                                                                    clsx,
-                                                                    msg,
-                                                                    realm
-                                                                }) => {
+    social,
+    kcClsx,
+    clsx,
+    msg,
+    realm
+}) => {
     const providers = social?.providers || [];
 
     return (

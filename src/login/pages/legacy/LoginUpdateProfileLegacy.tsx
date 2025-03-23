@@ -6,13 +6,24 @@ import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../../KcContext";
 import type { I18n } from "../../i18n";
 
-type LoginUpdateProfileProps = PageProps<Extract<KcContext, { pageId: "login-update-profile.ftl" }>, I18n> & {
+type LoginUpdateProfileProps = PageProps<
+    Extract<KcContext, { pageId: "login-update-profile.ftl" }>,
+    I18n
+> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
     doMakeUserConfirmPassword: boolean;
 };
 
 export default function LoginUpdateProfile(props: LoginUpdateProfileProps) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes, UserProfileFormFields, doMakeUserConfirmPassword } = props;
+    const {
+        kcContext,
+        i18n,
+        doUseDefaultCss,
+        Template,
+        classes,
+        UserProfileFormFields,
+        doMakeUserConfirmPassword
+    } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
@@ -35,7 +46,12 @@ export default function LoginUpdateProfile(props: LoginUpdateProfileProps) {
             headerNode={msg("loginProfileTitle")}
             displayMessage={messagesPerField.exists("global")}
         >
-            <form id="kc-update-profile-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
+            <form
+                id="kc-update-profile-form"
+                className={kcClsx("kcFormClass")}
+                action={url.loginAction}
+                method="post"
+            >
                 <UserProfileFormFields
                     kcContext={kcContext}
                     i18n={i18n}
@@ -61,7 +77,11 @@ export default function LoginUpdateProfile(props: LoginUpdateProfileProps) {
                         />
                         {isAppInitiatedAction && (
                             <button
-                                className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonLargeClass")}
+                                className={kcClsx(
+                                    "kcButtonClass",
+                                    "kcButtonDefaultClass",
+                                    "kcButtonLargeClass"
+                                )}
                                 type="submit"
                                 name="cancel-aia"
                                 value="true"
