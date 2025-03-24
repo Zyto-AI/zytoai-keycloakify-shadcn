@@ -225,8 +225,7 @@ export default function LoginRecoveryAuthnCodeConfig(
                     name="kcRecoveryCodesConfirmationCheck"
                     onChange={function () {
                         //@ts-expect-error: This is code from the original theme, we trust it.
-                        document.getElementById("saveRecoveryAuthnCodesBtn").disabled =
-                            !this.checked;
+                        document.getElementById("saveRecoveryAuthnCodesBtn").disabled = !this.checked;
                     }}
                 />
                 <label htmlFor="kcRecoveryCodesConfirmationCheck">
