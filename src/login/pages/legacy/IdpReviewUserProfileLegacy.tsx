@@ -6,13 +6,24 @@ import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFo
 import type { KcContext } from "../../KcContext";
 import type { I18n } from "../../i18n";
 
-type IdpReviewUserProfileProps = PageProps<Extract<KcContext, { pageId: "idp-review-user-profile.ftl" }>, I18n> & {
+type IdpReviewUserProfileProps = PageProps<
+    Extract<KcContext, { pageId: "idp-review-user-profile.ftl" }>,
+    I18n
+> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
     doMakeUserConfirmPassword: boolean;
 };
 
 export default function IdpReviewUserProfile(props: IdpReviewUserProfileProps) {
-    const { kcContext, i18n, doUseDefaultCss, Template, classes, UserProfileFormFields, doMakeUserConfirmPassword } = props;
+    const {
+        kcContext,
+        i18n,
+        doUseDefaultCss,
+        Template,
+        classes,
+        UserProfileFormFields,
+        doMakeUserConfirmPassword
+    } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
@@ -35,7 +46,12 @@ export default function IdpReviewUserProfile(props: IdpReviewUserProfileProps) {
             displayRequiredFields
             headerNode={msg("loginIdpReviewProfileTitle")}
         >
-            <form id="kc-idp-review-profile-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
+            <form
+                id="kc-idp-review-profile-form"
+                className={kcClsx("kcFormClass")}
+                action={url.loginAction}
+                method="post"
+            >
                 <UserProfileFormFields
                     kcContext={kcContext}
                     i18n={i18n}
@@ -49,7 +65,12 @@ export default function IdpReviewUserProfile(props: IdpReviewUserProfileProps) {
                     </div>
                     <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
                         <input
-                            className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
+                            className={kcClsx(
+                                "kcButtonClass",
+                                "kcButtonPrimaryClass",
+                                "kcButtonBlockClass",
+                                "kcButtonLargeClass"
+                            )}
                             type="submit"
                             value={msgStr("doSubmit")}
                             disabled={!isFomSubmittable}

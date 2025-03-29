@@ -2,6 +2,7 @@ import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
 import { buttonVariants } from "../../components/ui/button";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 export default function Info(props: PageProps<Extract<KcContext, { pageId: "info.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
@@ -19,7 +20,7 @@ export default function Info(props: PageProps<Extract<KcContext, { pageId: "info
             headerNode={
                 <span
                     dangerouslySetInnerHTML={{
-                        __html: messageHeader ?? message.summary
+                        __html: messageHeader ?? kcSanitize(message.summary)
                     }}
                 />
             }
@@ -29,7 +30,7 @@ export default function Info(props: PageProps<Extract<KcContext, { pageId: "info
                     className="instruction"
                     dangerouslySetInnerHTML={{
                         __html: (() => {
-                            let html = message.summary;
+                            let html = kcSanitize(message.summary);
 
                             if (requiredActions) {
                                 html += "<b>";

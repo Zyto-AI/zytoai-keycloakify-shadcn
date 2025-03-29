@@ -1,15 +1,18 @@
 import React from "react";
 import { clsx } from "keycloakify/tools/clsx";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 
 export interface SocialProvidersProps {
-    social: {
-        providers?: Array<{
-            alias: string;
-            loginUrl: string;
-            displayName: string;
-            iconClasses?: string;
-        }>;
-    };
+    social:
+        | {
+              providers?: Array<{
+                  alias: string;
+                  loginUrl: string;
+                  displayName: string;
+                  iconClasses?: string;
+              }>;
+          }
+        | undefined;
     kcClsx: (...args: any[]) => string;
     clsx: (...args: any[]) => string;
     msg: any;
@@ -25,14 +28,14 @@ export const SocialProviders: React.FC<SocialProvidersProps> = ({
     msg,
     realm
 }) => {
-    const providers = social.providers || [];
+    const providers = social?.providers || [];
 
     return (
         realm.password &&
         providers.length > 0 && (
             <>
                 {realm.password &&
-                    social.providers !== undefined &&
+                    social?.providers !== undefined &&
                     social.providers.length !== 0 && (
                         <div id="kc-social-providers" className="mt-5 space-y-7">
                             <h2 className="text-center text-lg mt-7">
@@ -66,7 +69,7 @@ export const SocialProviders: React.FC<SocialProvidersProps> = ({
                                             <span
                                                 className="mx-3"
                                                 dangerouslySetInnerHTML={{
-                                                    __html: p.displayName
+                                                    __html: kcSanitize(p.displayName)
                                                 }}
                                             ></span>
                                         </a>

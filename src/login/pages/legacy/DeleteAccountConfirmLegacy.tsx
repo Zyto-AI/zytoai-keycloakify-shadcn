@@ -3,7 +3,9 @@ import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../../KcContext";
 import type { I18n } from "../../i18n";
 
-export default function DeleteAccountConfirm(props: PageProps<Extract<KcContext, { pageId: "delete-account-confirm.ftl" }>, I18n>) {
+export default function DeleteAccountConfirm(
+    props: PageProps<Extract<KcContext, { pageId: "delete-account-confirm.ftl" }>, I18n>
+) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { kcClsx } = getKcClsx({
@@ -16,9 +18,18 @@ export default function DeleteAccountConfirm(props: PageProps<Extract<KcContext,
     const { msg, msgStr } = i18n;
 
     return (
-        <Template kcContext={kcContext} i18n={i18n} doUseDefaultCss={doUseDefaultCss} classes={classes} headerNode={msg("deleteAccountConfirm")}>
+        <Template
+            kcContext={kcContext}
+            i18n={i18n}
+            doUseDefaultCss={doUseDefaultCss}
+            classes={classes}
+            headerNode={msg("deleteAccountConfirm")}
+        >
             <form action={url.loginAction} className="form-vertical" method="post">
-                <div className="alert alert-warning" style={{ marginTop: "0", marginBottom: "30px" }}>
+                <div
+                    className="alert alert-warning"
+                    style={{ marginTop: "0", marginBottom: "30px" }}
+                >
                     <span className="pficon pficon-warning-triangle-o"></span>
                     {msg("irreversibleAction")}
                 </div>
@@ -36,13 +47,21 @@ export default function DeleteAccountConfirm(props: PageProps<Extract<KcContext,
                 <p className="delete-account-text">{msg("finalDeletionConfirmation")}</p>
                 <div id="kc-form-buttons">
                     <input
-                        className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonLargeClass")}
+                        className={kcClsx(
+                            "kcButtonClass",
+                            "kcButtonPrimaryClass",
+                            "kcButtonLargeClass"
+                        )}
                         type="submit"
                         value={msgStr("doConfirmDelete")}
                     />
                     {triggered_from_aia && (
                         <button
-                            className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonLargeClass")}
+                            className={kcClsx(
+                                "kcButtonClass",
+                                "kcButtonDefaultClass",
+                                "kcButtonLargeClass"
+                            )}
                             style={{ marginLeft: "calc(100% - 220px)" }}
                             type="submit"
                             name="cancel-aia"

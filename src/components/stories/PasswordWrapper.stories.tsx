@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { PasswordWrapper } from "../ui/PasswordWrapper";
-import { Button } from "../ui/button";
-import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
+import { type KcClsx } from "keycloakify/login/lib/kcClsx";
 import { getKcContextMock } from "../../login/KcPageStory";
 // Meta configuration following your requested style
 // Mock for I18n
@@ -21,9 +20,16 @@ const i18nMock: I18n = {
     msg: (key: string) => React.createElement("span", {}, key),
     advancedMsg: (key: string, ...args: (string | undefined)[]) =>
         React.createElement("span", {}, `${key} ${args.join(" ")}`),
-    currentLanguageTag: "en",
-    getChangeLocaleUrl: (languageTag: string) => `#${languageTag}`,
-    labelBySupportedLanguageTag: { en: "English" },
+    enabledLanguages: [
+        {
+            languageTag: "en",
+            label: "English",
+            href: "#en"
+        }
+    ],
+    currentLanguage: { languageTag: "en", label: "English" },
+    //getChangeLocaleUrl: (languageTag: string) => `#${languageTag}`,
+    //labelBySupportedLanguageTag: { en: "English" },
     advancedMsgStr: (key: string, ...args: (string | undefined)[]) =>
         `${key} ${args.join(" ")}`,
     isFetchingTranslations: false

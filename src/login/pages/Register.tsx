@@ -7,6 +7,7 @@ import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
 import { Button, buttonVariants } from "../../components/ui/button";
 import { checkboxVariants } from "../../components/ui/checkbox";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 type RegisterProps = PageProps<Extract<KcContext, { pageId: "register.ftl" }>, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
     doMakeUserConfirmPassword: boolean;
@@ -132,7 +133,7 @@ function TermsAcceptance(props: {
                             className={kcClsx("kcInputErrorMessageClass")}
                             aria-live="polite"
                             dangerouslySetInnerHTML={{
-                                __html: messagesPerField.get("termsAccepted")
+                                __html: kcSanitize(messagesPerField.get("termsAccepted"))
                             }}
                         />
                     </div>

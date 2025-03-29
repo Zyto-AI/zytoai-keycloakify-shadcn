@@ -35,7 +35,7 @@ export default function FrontchannelLogout(props: PageProps<Extract<KcContext, {
                 ))}
             </ul>
             {logout.logoutRedirectUri && (
-                <a id="continue" className={buttonVariants({variant:"default"})} href={logout.logoutRedirectUri}>
+                <a id="continue" className={buttonVariants({ variant: "default" })} href={logout.logoutRedirectUri}>
                     {msg("doContinue")}
                 </a>
             )}

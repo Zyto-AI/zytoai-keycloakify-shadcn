@@ -3,7 +3,12 @@ import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../../KcContext";
 import type { I18n } from "../../i18n";
 
-export default function LoginRecoveryAuthnCodeInput(props: PageProps<Extract<KcContext, { pageId: "login-recovery-authn-code-input.ftl" }>, I18n>) {
+export default function LoginRecoveryAuthnCodeInput(
+    props: PageProps<
+        Extract<KcContext, { pageId: "login-recovery-authn-code-input.ftl" }>,
+        I18n
+    >
+) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { kcClsx } = getKcClsx({
@@ -24,11 +29,22 @@ export default function LoginRecoveryAuthnCodeInput(props: PageProps<Extract<KcC
             headerNode={msg("auth-recovery-code-header")}
             displayMessage={!messagesPerField.existsError("recoveryCodeInput")}
         >
-            <form id="kc-recovery-code-login-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
+            <form
+                id="kc-recovery-code-login-form"
+                className={kcClsx("kcFormClass")}
+                action={url.loginAction}
+                method="post"
+            >
                 <div className={kcClsx("kcFormGroupClass")}>
                     <div className={kcClsx("kcLabelWrapperClass")}>
-                        <label htmlFor="recoveryCodeInput" className={kcClsx("kcLabelClass")}>
-                            {msg("auth-recovery-code-prompt", `${recoveryAuthnCodesInputBean.codeNumber}`)}
+                        <label
+                            htmlFor="recoveryCodeInput"
+                            className={kcClsx("kcLabelClass")}
+                        >
+                            {msg(
+                                "auth-recovery-code-prompt",
+                                `${recoveryAuthnCodesInputBean.codeNumber}`
+                            )}
                         </label>
                     </div>
                     <div className={kcClsx("kcInputWrapperClass")}>
@@ -36,7 +52,9 @@ export default function LoginRecoveryAuthnCodeInput(props: PageProps<Extract<KcC
                             tabIndex={1}
                             id="recoveryCodeInput"
                             name="recoveryCodeInput"
-                            aria-invalid={messagesPerField.existsError("recoveryCodeInput")}
+                            aria-invalid={messagesPerField.existsError(
+                                "recoveryCodeInput"
+                            )}
                             autoComplete="off"
                             type="text"
                             className={kcClsx("kcInputClass")}
@@ -56,12 +74,20 @@ export default function LoginRecoveryAuthnCodeInput(props: PageProps<Extract<KcC
                 </div>
 
                 <div className={kcClsx("kcFormGroupClass")}>
-                    <div id="kc-form-options" className={kcClsx("kcFormOptionsWrapperClass")}>
+                    <div
+                        id="kc-form-options"
+                        className={kcClsx("kcFormOptionsWrapperClass")}
+                    >
                         <div className={kcClsx("kcFormOptionsWrapperClass")} />
                     </div>
                     <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
                         <input
-                            className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
+                            className={kcClsx(
+                                "kcButtonClass",
+                                "kcButtonPrimaryClass",
+                                "kcButtonBlockClass",
+                                "kcButtonLargeClass"
+                            )}
                             name="login"
                             id="kc-login"
                             type="submit"

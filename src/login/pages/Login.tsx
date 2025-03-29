@@ -13,6 +13,7 @@ import { checkboxVariants } from "../../components/ui/checkbox";
 import { Separator } from "../../components/ui/separator";
 import { PasswordWrapper } from "../../components/ui/PasswordWrapper";
 import SocialProviders from "../../components/ui/SocialProviders";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 export default function Login(props: PageProps<Extract<KcContext, { pageId: "login.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
@@ -87,7 +88,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                             className="input-error py-3"
                                             aria-live="polite"
                                             dangerouslySetInnerHTML={{
-                                                __html: messagesPerField.getFirstError("username", "password")
+                                                __html: kcSanitize(messagesPerField.getFirstError("username", "password"))
                                             }}
                                         />
                                     )}
@@ -115,7 +116,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                                         className={kcClsx("kcInputErrorMessageClass")}
                                         aria-live="polite"
                                         dangerouslySetInnerHTML={{
-                                            __html: messagesPerField.getFirstError("username", "password")
+                                            __html: kcSanitize(messagesPerField.getFirstError("username", "password"))
                                         }}
                                     />
                                 )}

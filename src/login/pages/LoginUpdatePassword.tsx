@@ -9,6 +9,7 @@ import { Input } from "../../components/ui/input";
 import { buttonVariants, Button } from "../../components/ui/button";
 import { cn } from "../../lib/utils";
 import { checkboxVariants } from "../../components/ui/checkbox";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 export default function LoginUpdatePassword(props: PageProps<Extract<KcContext, { pageId: "login-update-password.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
@@ -55,7 +56,7 @@ export default function LoginUpdatePassword(props: PageProps<Extract<KcContext, 
                                 className={kcClsx("kcInputErrorMessageClass")}
                                 aria-live="polite"
                                 dangerouslySetInnerHTML={{
-                                    __html: messagesPerField.get("password")
+                                    __html: kcSanitize(messagesPerField.get("password"))
                                 }}
                             />
                         )}
@@ -86,7 +87,7 @@ export default function LoginUpdatePassword(props: PageProps<Extract<KcContext, 
                                 className={kcClsx("kcInputErrorMessageClass")}
                                 aria-live="polite"
                                 dangerouslySetInnerHTML={{
-                                    __html: messagesPerField.get("password-confirm")
+                                    __html: kcSanitize(messagesPerField.get("password-confirm"))
                                 }}
                             />
                         )}
