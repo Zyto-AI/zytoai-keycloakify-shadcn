@@ -3,9 +3,7 @@ import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../../KcContext";
 import type { I18n } from "../../i18n";
 
-export default function DeleteCredential(
-    props: PageProps<Extract<KcContext, { pageId: "delete-credential.ftl" }>, I18n>
-) {
+export default function DeleteCredential(props: PageProps<Extract<KcContext, { pageId: "delete-credential.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { msgStr, msg } = i18n;
@@ -26,27 +24,17 @@ export default function DeleteCredential(
             displayMessage={false}
             headerNode={msg("deleteCredentialTitle", credentialLabel)}
         >
-            <div id="kc-delete-text">
-                {msg("deleteCredentialMessage", credentialLabel)}
-            </div>
+            <div id="kc-delete-text">{msg("deleteCredentialMessage", credentialLabel)}</div>
             <form className="form-actions" action={url.loginAction} method="POST">
                 <input
-                    className={kcClsx(
-                        "kcButtonClass",
-                        "kcButtonPrimaryClass",
-                        "kcButtonLargeClass"
-                    )}
+                    className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonLargeClass")}
                     name="accept"
                     id="kc-accept"
                     type="submit"
                     value={msgStr("doConfirmDelete")}
                 />
                 <input
-                    className={kcClsx(
-                        "kcButtonClass",
-                        "kcButtonDefaultClass",
-                        "kcButtonLargeClass"
-                    )}
+                    className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonLargeClass")}
                     name="cancel-aia"
                     value={msgStr("doCancel")}
                     id="kc-decline"

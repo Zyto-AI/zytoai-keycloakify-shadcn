@@ -2,22 +2,12 @@ import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../../KcContext";
 import type { I18n } from "../../i18n";
 
-export default function Info(
-    props: PageProps<Extract<KcContext, { pageId: "info.ftl" }>, I18n>
-) {
+export default function Info(props: PageProps<Extract<KcContext, { pageId: "info.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { advancedMsgStr, msg } = i18n;
 
-    const {
-        messageHeader,
-        message,
-        requiredActions,
-        skipLink,
-        pageRedirectUri,
-        actionUri,
-        client
-    } = kcContext;
+    const { messageHeader, message, requiredActions, skipLink, pageRedirectUri, actionUri, client } = kcContext;
 
     return (
         <Template
@@ -44,11 +34,7 @@ export default function Info(
                             if (requiredActions) {
                                 html += "<b>";
 
-                                html += requiredActions
-                                    .map(requiredAction =>
-                                        advancedMsgStr(`requiredAction.${requiredAction}`)
-                                    )
-                                    .join(", ");
+                                html += requiredActions.map(requiredAction => advancedMsgStr(`requiredAction.${requiredAction}`)).join(", ");
 
                                 html += "</b>";
                             }

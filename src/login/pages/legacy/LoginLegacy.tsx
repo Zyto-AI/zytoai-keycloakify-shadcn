@@ -57,7 +57,7 @@ export default function Login(
             socialProvidersNode={
                 <>
                     {realm.password &&
-                        social?.providers !== undefined &&
+                        social.providers !== undefined &&
                         social.providers.length !== 0 && (
                             <div
                                 id="kc-social-providers"

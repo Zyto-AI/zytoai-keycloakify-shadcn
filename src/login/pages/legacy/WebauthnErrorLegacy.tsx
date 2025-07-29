@@ -3,9 +3,7 @@ import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../../KcContext";
 import type { I18n } from "../../i18n";
 
-export default function WebauthnError(
-    props: PageProps<Extract<KcContext, { pageId: "webauthn-error.ftl" }>, I18n>
-) {
+export default function WebauthnError(props: PageProps<Extract<KcContext, { pageId: "webauthn-error.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { url, isAppInitiatedAction } = kcContext;
@@ -26,12 +24,7 @@ export default function WebauthnError(
             displayMessage
             headerNode={msg("webauthn-error-title")}
         >
-            <form
-                id="kc-error-credential-form"
-                className={kcClsx("kcFormClass")}
-                action={url.loginAction}
-                method="post"
-            >
+            <form id="kc-error-credential-form" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
                 <input type="hidden" id="executionValue" name="authenticationExecution" />
                 <input type="hidden" id="isSetRetry" name="isSetRetry" />
             </form>
@@ -46,31 +39,16 @@ export default function WebauthnError(
                     document.getElementById("kc-error-credential-form").submit();
                 }}
                 type="button"
-                className={kcClsx(
-                    "kcButtonClass",
-                    "kcButtonPrimaryClass",
-                    "kcButtonBlockClass",
-                    "kcButtonLargeClass"
-                )}
+                className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                 name="try-again"
                 id="kc-try-again"
                 value={msgStr("doTryAgain")}
             />
             {isAppInitiatedAction && (
-                <form
-                    action={url.loginAction}
-                    className={kcClsx("kcFormClass")}
-                    id="kc-webauthn-settings-form"
-                    method="post"
-                >
+                <form action={url.loginAction} className={kcClsx("kcFormClass")} id="kc-webauthn-settings-form" method="post">
                     <button
                         type="submit"
-                        className={kcClsx(
-                            "kcButtonClass",
-                            "kcButtonDefaultClass",
-                            "kcButtonBlockClass",
-                            "kcButtonLargeClass"
-                        )}
+                        className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                         id="cancelWebAuthnAIA"
                         name="cancel-aia"
                         value="true"

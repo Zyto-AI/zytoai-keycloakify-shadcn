@@ -5,7 +5,6 @@ import type { I18n } from "../i18n";
 import { buttonVariants } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { cn } from "../../lib/utils";
-import { kcSanitize } from "keycloakify/lib/kcSanitize";
 export default function LoginRecoveryAuthnCodeInput(props: PageProps<Extract<KcContext, { pageId: "login-recovery-authn-code-input.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
@@ -51,7 +50,7 @@ export default function LoginRecoveryAuthnCodeInput(props: PageProps<Extract<KcC
                                 className={kcClsx("kcInputErrorMessageClass")}
                                 aria-live="polite"
                                 dangerouslySetInnerHTML={{
-                                    __html: kcSanitize(messagesPerField.get("recoveryCodeInput"))
+                                    __html: messagesPerField.get("recoveryCodeInput")
                                 }}
                             />
                         )}

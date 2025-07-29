@@ -5,7 +5,6 @@ import type { I18n } from "../i18n";
 import { buttonVariants } from "../../components/ui/button";
 import { cn } from "../../lib/utils";
 import { Input } from "../../components/ui/input";
-import { kcSanitize } from "keycloakify/lib/kcSanitize";
 export default function LoginResetPassword(props: PageProps<Extract<KcContext, { pageId: "login-reset-password.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
@@ -56,7 +55,7 @@ export default function LoginResetPassword(props: PageProps<Extract<KcContext, {
                                 className={kcClsx("kcInputErrorMessageClass")}
                                 aria-live="polite"
                                 dangerouslySetInnerHTML={{
-                                    __html: kcSanitize(messagesPerField.get("username"))
+                                    __html: messagesPerField.get("username")
                                 }}
                             />
                         )}

@@ -9,7 +9,6 @@ import { PasswordWrapper } from "../../components/ui/PasswordWrapper";
 import { buttonVariants } from "../../components/ui/button";
 import { cn } from "../../lib/utils";
 import { Input } from "../../components/ui/input";
-import { kcSanitize } from "keycloakify/lib/kcSanitize";
 export default function LoginPassword(props: PageProps<Extract<KcContext, { pageId: "login-password.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
@@ -68,7 +67,7 @@ export default function LoginPassword(props: PageProps<Extract<KcContext, { page
                                     className={kcClsx("kcInputErrorMessageClass")}
                                     aria-live="polite"
                                     dangerouslySetInnerHTML={{
-                                        __html: kcSanitize(messagesPerField.get("password"))
+                                        __html: messagesPerField.get("password")
                                     }}
                                 />
                             )}

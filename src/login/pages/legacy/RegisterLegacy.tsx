@@ -12,28 +12,14 @@ type RegisterProps = PageProps<Extract<KcContext, { pageId: "register.ftl" }>, I
 };
 
 export default function Register(props: RegisterProps) {
-    const {
-        kcContext,
-        i18n,
-        doUseDefaultCss,
-        Template,
-        classes,
-        UserProfileFormFields,
-        doMakeUserConfirmPassword
-    } = props;
+    const { kcContext, i18n, doUseDefaultCss, Template, classes, UserProfileFormFields, doMakeUserConfirmPassword } = props;
 
     const { kcClsx } = getKcClsx({
         doUseDefaultCss,
         classes
     });
 
-    const {
-        url,
-        messagesPerField,
-        recaptchaRequired,
-        recaptchaSiteKey,
-        termsAcceptanceRequired
-    } = kcContext;
+    const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey, termsAcceptanceRequired } = kcContext;
 
     const { msg, msgStr } = i18n;
 
@@ -50,12 +36,7 @@ export default function Register(props: RegisterProps) {
             displayMessage={messagesPerField.exists("global")}
             displayRequiredFields
         >
-            <form
-                id="kc-register-form"
-                className={kcClsx("kcFormClass")}
-                action={url.registrationAction}
-                method="post"
-            >
+            <form id="kc-register-form" className={kcClsx("kcFormClass")} action={url.registrationAction} method="post">
                 <UserProfileFormFields
                     kcContext={kcContext}
                     i18n={i18n}
@@ -75,11 +56,7 @@ export default function Register(props: RegisterProps) {
                 {recaptchaRequired && (
                     <div className="form-group">
                         <div className={kcClsx("kcInputWrapperClass")}>
-                            <div
-                                className="g-recaptcha"
-                                data-size="compact"
-                                data-sitekey={recaptchaSiteKey}
-                            ></div>
+                            <div className="g-recaptcha" data-size="compact" data-sitekey={recaptchaSiteKey}></div>
                         </div>
                     </div>
                 )}
@@ -93,16 +70,8 @@ export default function Register(props: RegisterProps) {
                     </div>
                     <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
                         <input
-                            disabled={
-                                !isFormSubmittable ||
-                                (termsAcceptanceRequired && !areTermsAccepted)
-                            }
-                            className={kcClsx(
-                                "kcButtonClass",
-                                "kcButtonPrimaryClass",
-                                "kcButtonBlockClass",
-                                "kcButtonLargeClass"
-                            )}
+                            disabled={!isFormSubmittable || (termsAcceptanceRequired && !areTermsAccepted)}
+                            className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                             type="submit"
                             value={msgStr("doRegister")}
                         />
@@ -120,13 +89,7 @@ function TermsAcceptance(props: {
     areTermsAccepted: boolean;
     onAreTermsAcceptedValueChange: (areTermsAccepted: boolean) => void;
 }) {
-    const {
-        i18n,
-        kcClsx,
-        messagesPerField,
-        areTermsAccepted,
-        onAreTermsAcceptedValueChange
-    } = props;
+    const { i18n, kcClsx, messagesPerField, areTermsAccepted, onAreTermsAcceptedValueChange } = props;
 
     const { msg } = i18n;
 
