@@ -1,18 +1,32 @@
 import { useEffect } from "react";
+import { assert } from "keycloakify/tools/assert";
 import { clsx } from "keycloakify/tools/clsx";
 import type { TemplateProps } from "keycloakify/login/TemplateProps";
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
+import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
+import { useInsertLinkTags } from "keycloakify/tools/useInsertLinkTags";
 import { useSetClassName } from "keycloakify/tools/useSetClassName";
 import type { I18n } from "./i18n";
 import type { KcContext } from "./KcContext";
 import { Button } from "../components/ui/button";
 import { ModeToggle } from "../components/ui/mode-toggle";
-import { Card, CardContent } from "../components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
 import "../styles/global.css";
 import { GlobeAltIcon } from "@heroicons/react/24/outline";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../components/ui/dropdown-menu";
-import { useInitialize } from "keycloakify/login/Template.useInitialize";
-import { kcSanitize } from "keycloakify/lib/kcSanitize";
+import {
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuCheckboxItem,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubTrigger,
+    DropdownMenuSubContent
+} from "../components/ui/dropdown-menu";
 
 export function Template(props: TemplateProps<KcContext, I18n>) {
     const {
@@ -33,9 +47,9 @@ export function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { kcClsx } = getKcClsx({ doUseDefaultCss, classes });
 
-    const { msg, msgStr, currentLanguage, enabledLanguages } = i18n;
+    const { msg, msgStr, getChangeLocaleUrl, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
 
-    const { realm, auth, url, message, isAppInitiatedAction } = kcContext;
+    const { realm, locale, auth, url, message, isAppInitiatedAction, authenticationSession, scripts } = kcContext;
 
     useEffect(() => {
         document.title = documentTitle ?? msgStr("loginTitle", kcContext.realm.displayName);
@@ -51,87 +65,77 @@ export function Template(props: TemplateProps<KcContext, I18n>) {
         className: bodyClassName ?? kcClsx("kcBodyClass")
     });
 
-    // https://docs.keycloakify.dev/documentation/v11/faq-and-help/migration-guides/v10-greater-than-v11#changes-to-the-i18n-system
-    // useEffect(() => {
-    //     const { currentLanguageTag } = locale ?? {};
-    //
-    //     if (currentLanguageTag === undefined) {
-    //         return;
-    //     }
-    //
-    //     const html = document.querySelector("html");
-    //     assert(html !== null);
-    //     html.lang = currentLanguageTag;
-    // }, []);
+    useEffect(() => {
+        const { currentLanguageTag } = locale ?? {};
 
-    // https://docs.keycloakify.dev/documentation/v11/faq-and-help/migration-guides/v10-greater-than-v11#some-components-logic-have-been-abstracted-away
-    // const { areAllStyleSheetsLoaded } = useInsertLinkTags({
-    //     componentOrHookName: "Template",
-    //     hrefs: !doUseDefaultCss
-    //         ? []
-    //         : [
-    //               `${url.resourcesCommonPath}/node_modules/@patternfly/patternfly/patternfly.min.css`,
-    //               `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
-    //               `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
-    //               `${url.resourcesCommonPath}/lib/pficon/pficon.css`,
-    //               `${url.resourcesPath}/css/login.css`
-    //           ]
-    // });
-    //
-    // const { insertScriptTags } = useInsertScriptTags({
-    //     componentOrHookName: "Template",
-    //     scriptTags: [
-    //         {
-    //             type: "module",
-    //             src: `${url.resourcesPath}/js/menu-button-links.js`
-    //         },
-    //         ...(authenticationSession === undefined
-    //             ? []
-    //             : [
-    //                   {
-    //                       type: "module",
-    //                       textContent: [
-    //                           `import { checkCookiesAndSetTimer } from "${url.resourcesPath}/js/authChecker.js";`,
-    //                           ``,
-    //                           `checkCookiesAndSetTimer(`,
-    //                           `  "${authenticationSession.authSessionId}",`,
-    //                           `  "${authenticationSession.tabId}",`,
-    //                           `  "${url.ssoLoginInOtherTabsUrl}"`,
-    //                           `);`
-    //                       ].join("\n")
-    //                   } as const
-    //               ]),
-    //         ...scripts?.map(
-    //             script =>
-    //                 ({
-    //                     type: "text/javascript",
-    //                     src: script
-    //                 }) as const
-    //         )
-    //     ]
-    // });
-    //
-    // useEffect(() => {
-    //     if (areAllStyleSheetsLoaded) {
-    //         insertScriptTags();
-    //     }
-    // }, [areAllStyleSheetsLoaded]);
-    //
-    // if (!areAllStyleSheetsLoaded) {
-    //     return null;
-    // }
+        if (currentLanguageTag === undefined) {
+            return;
+        }
 
-    const { isReadyToRender } = useInitialize({ kcContext, doUseDefaultCss });
+        const html = document.querySelector("html");
+        assert(html !== null);
+        html.lang = currentLanguageTag;
+    }, []);
 
-    if (!isReadyToRender) {
+    const { areAllStyleSheetsLoaded } = useInsertLinkTags({
+        componentOrHookName: "Template",
+        hrefs: !doUseDefaultCss
+            ? []
+            : [
+                  `${url.resourcesCommonPath}/node_modules/@patternfly/patternfly/patternfly.min.css`,
+                  `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
+                  `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
+                  `${url.resourcesCommonPath}/lib/pficon/pficon.css`,
+                  `${url.resourcesPath}/css/login.css`
+              ]
+    });
+
+    const { insertScriptTags } = useInsertScriptTags({
+        componentOrHookName: "Template",
+        scriptTags: [
+            {
+                type: "module",
+                src: `${url.resourcesPath}/js/menu-button-links.js`
+            },
+            ...(authenticationSession === undefined
+                ? []
+                : [
+                      {
+                          type: "module",
+                          textContent: [
+                              `import { checkCookiesAndSetTimer } from "${url.resourcesPath}/js/authChecker.js";`,
+                              ``,
+                              `checkCookiesAndSetTimer(`,
+                              `  "${authenticationSession.authSessionId}",`,
+                              `  "${authenticationSession.tabId}",`,
+                              `  "${url.ssoLoginInOtherTabsUrl}"`,
+                              `);`
+                          ].join("\n")
+                      } as const
+                  ]),
+            ...scripts.map(
+                script =>
+                    ({
+                        type: "text/javascript",
+                        src: script
+                    }) as const
+            )
+        ]
+    });
+
+    useEffect(() => {
+        if (areAllStyleSheetsLoaded) {
+            insertScriptTags();
+        }
+    }, [areAllStyleSheetsLoaded]);
+
+    if (!areAllStyleSheetsLoaded) {
         return null;
     }
-
     const languageSelector = () => {
         return (
             <div>
-                {/*{realm.internationalizationEnabled && (assert(locale !== undefined), locale.supported.length > 1) && (*/}
-                {enabledLanguages.length > 1 && (
+                {realm.internationalizationEnabled && (assert(locale !== undefined), locale.supported.length > 1) && (
                     <div className="mt-0.5 -mr-3  justify-end">
                         <div id="kc-locale-wrapper" className="flex  justify-end">
                             <DropdownMenu>
@@ -148,23 +152,15 @@ export function Template(props: TemplateProps<KcContext, I18n>) {
                                     >
                                         <div className="flex space-x-2">
                                             <GlobeAltIcon className="h-5 w-5" />
-                                            {/*<span>{labelBySupportedLanguageTag[currentLanguageTag]}</span>*/}
-                                            <span>{currentLanguage.label}</span>
+                                            <span>{labelBySupportedLanguageTag[currentLanguageTag]}</span>
                                         </div>
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent id="language-switch1" role="menu">
-                                    {/*{locale.supported.map(({ languageTag }, i) => (
+                                    {locale.supported.map(({ languageTag }, i) => (
                                         <DropdownMenuItem key={languageTag} role="none">
                                             <a role="menuitem" id={`language-${i + 1}`} href={getChangeLocaleUrl(languageTag)}>
                                                 {labelBySupportedLanguageTag[languageTag]}
-                                            </a>
-                                        </DropdownMenuItem>
-                                    ))}*/}
-                                    {enabledLanguages.map(({ languageTag, label, href }, i) => (
-                                        <DropdownMenuItem key={languageTag} role="none">
-                                            <a role="menuitem" id={`language-${i + 1}`} href={href}>
-                                                {label}
                                             </a>
                                         </DropdownMenuItem>
                                     ))}
@@ -240,9 +236,7 @@ export function Template(props: TemplateProps<KcContext, I18n>) {
                                     <span
                                         className="text-sm"
                                         dangerouslySetInnerHTML={{
-                                            // https://docs.keycloakify.dev/documentation/v11/faq-and-help/migration-guides/v10-greater-than-v11#kcsanitize
-                                            /*__html: message.summary*/
-                                            __html: kcSanitize(message.summary)
+                                            __html: message.summary
                                         }}
                                     />
                                 </div>

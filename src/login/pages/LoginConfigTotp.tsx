@@ -6,7 +6,6 @@ import { Button, buttonVariants } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { TextDisplay } from "../../components/ui/TextDisplay";
 import { checkboxVariants } from "../../components/ui/checkbox";
-import { kcSanitize } from "keycloakify/lib/kcSanitize";
 export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pageId: "login-config-totp.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
@@ -123,7 +122,7 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pa
                                     className={kcClsx("kcInputErrorMessageClass")}
                                     aria-live="polite"
                                     dangerouslySetInnerHTML={{
-                                        __html: kcSanitize(messagesPerField.get("totp"))
+                                        __html: messagesPerField.get("totp")
                                     }}
                                 />
                             )}
@@ -154,7 +153,7 @@ export default function LoginConfigTotp(props: PageProps<Extract<KcContext, { pa
                                     className={kcClsx("kcInputErrorMessageClass")}
                                     aria-live="polite"
                                     dangerouslySetInnerHTML={{
-                                        __html: kcSanitize(messagesPerField.get("userLabel"))
+                                        __html: messagesPerField.get("userLabel")
                                     }}
                                 />
                             )}

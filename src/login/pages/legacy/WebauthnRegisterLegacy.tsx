@@ -6,9 +6,7 @@ import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../../KcContext";
 import type { I18n } from "../../i18n";
 
-export default function WebauthnRegister(
-    props: PageProps<Extract<KcContext, { pageId: "webauthn-register.ftl" }>, I18n>
-) {
+export default function WebauthnRegister(props: PageProps<Extract<KcContext, { pageId: "webauthn-register.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { kcClsx } = getKcClsx({ doUseDefaultCss, classes });
@@ -218,29 +216,12 @@ export default function WebauthnRegister(
                 </>
             }
         >
-            <form
-                id="register"
-                className={kcClsx("kcFormClass")}
-                action={url.loginAction}
-                method="post"
-            >
+            <form id="register" className={kcClsx("kcFormClass")} action={url.loginAction} method="post">
                 <div className={kcClsx("kcFormGroupClass")}>
                     <input type="hidden" id="clientDataJSON" name="clientDataJSON" />
-                    <input
-                        type="hidden"
-                        id="attestationObject"
-                        name="attestationObject"
-                    />
-                    <input
-                        type="hidden"
-                        id="publicKeyCredentialId"
-                        name="publicKeyCredentialId"
-                    />
-                    <input
-                        type="hidden"
-                        id="authenticatorLabel"
-                        name="authenticatorLabel"
-                    />
+                    <input type="hidden" id="attestationObject" name="attestationObject" />
+                    <input type="hidden" id="publicKeyCredentialId" name="publicKeyCredentialId" />
+                    <input type="hidden" id="authenticatorLabel" name="authenticatorLabel" />
                     <input type="hidden" id="transports" name="transports" />
                     <input type="hidden" id="error" name="error" />
                     <LogoutOtherSessions kcClsx={kcClsx} i18n={i18n} />
@@ -248,12 +229,7 @@ export default function WebauthnRegister(
             </form>
             <input
                 type="submit"
-                className={kcClsx(
-                    "kcButtonClass",
-                    "kcButtonPrimaryClass",
-                    "kcButtonBlockClass",
-                    "kcButtonLargeClass"
-                )}
+                className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                 id="registerWebAuthn"
                 value={msgStr("doRegisterSecurityKey")}
                 onClick={() => {
@@ -264,20 +240,10 @@ export default function WebauthnRegister(
             />
 
             {!isSetRetry && isAppInitiatedAction && (
-                <form
-                    action={url.loginAction}
-                    className={kcClsx("kcFormClass")}
-                    id="kc-webauthn-settings-form"
-                    method="post"
-                >
+                <form action={url.loginAction} className={kcClsx("kcFormClass")} id="kc-webauthn-settings-form" method="post">
                     <button
                         type="submit"
-                        className={kcClsx(
-                            "kcButtonClass",
-                            "kcButtonDefaultClass",
-                            "kcButtonBlockClass",
-                            "kcButtonLargeClass"
-                        )}
+                        className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonBlockClass", "kcButtonLargeClass")}
                         id="cancelWebAuthnAIA"
                         name="cancel-aia"
                         value="true"
@@ -300,13 +266,7 @@ function LogoutOtherSessions(props: { kcClsx: KcClsx; i18n: I18n }) {
             <div className={kcClsx("kcFormOptionsWrapperClass")}>
                 <div className="checkbox">
                     <label>
-                        <input
-                            type="checkbox"
-                            id="logout-sessions"
-                            name="logout-sessions"
-                            value="on"
-                            defaultChecked={true}
-                        />
+                        <input type="checkbox" id="logout-sessions" name="logout-sessions" value="on" defaultChecked={true} />
                         {msg("logoutOtherSessions")}
                     </label>
                 </div>

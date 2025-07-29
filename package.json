@@ -15,7 +15,7 @@
         "start": "react-scripts start",
         "prebuild": "keycloakify update-kc-gen",
         "build": "react-scripts build",
-        "postbuild": "rimraf build/keycloakify-dev-resources",
+        "postbuild": "rimraf build/keycloak-resources",
         "build-keycloak-theme": "npm run build && keycloakify build",
         "format": "prettier . --write"
     },
@@ -38,7 +38,7 @@
         "@reduxjs/toolkit": "^2.2.7",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
-        "keycloakify": "^11.8.22",
+        "keycloakify": "^10.0.5",
         "lucide-react": "^0.438.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",

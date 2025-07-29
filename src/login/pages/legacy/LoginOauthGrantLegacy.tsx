@@ -3,9 +3,7 @@ import { PageProps } from "keycloakify/login/pages/PageProps";
 import { KcContext } from "../../KcContext";
 import type { I18n } from "../../i18n";
 
-export default function LoginOauthGrant(
-    props: PageProps<Extract<KcContext, { pageId: "login-oauth-grant.ftl" }>, I18n>
-) {
+export default function LoginOauthGrant(props: PageProps<Extract<KcContext, { pageId: "login-oauth-grant.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, classes, Template } = props;
     const { url, oauth, client } = kcContext;
 
@@ -26,11 +24,7 @@ export default function LoginOauthGrant(
             headerNode={
                 <>
                     {client.attributes.logoUri && <img src={client.attributes.logoUri} />}
-                    <p>
-                        {client.name
-                            ? msg("oauthGrantTitle", advancedMsgStr(client.name))
-                            : msg("oauthGrantTitle", client.clientId)}
-                    </p>
+                    <p>{client.name ? msg("oauthGrantTitle", advancedMsgStr(client.name)) : msg("oauthGrantTitle", client.clientId)}</p>
                 </>
             }
         >
@@ -54,12 +48,7 @@ export default function LoginOauthGrant(
                 {client.attributes.policyUri ||
                     (client.attributes.tosUri && (
                         <h3>
-                            {client.name
-                                ? msg(
-                                      "oauthGrantInformation",
-                                      advancedMsgStr(client.name)
-                                  )
-                                : msg("oauthGrantInformation", client.clientId)}
+                            {client.name ? msg("oauthGrantInformation", advancedMsgStr(client.name)) : msg("oauthGrantInformation", client.clientId)}
                             {client.attributes.tosUri && (
                                 <>
                                     {msg("oauthGrantReview")}
@@ -89,22 +78,14 @@ export default function LoginOauthGrant(
                         <div id="kc-form-buttons">
                             <div className={kcClsx("kcFormButtonsWrapperClass")}>
                                 <input
-                                    className={kcClsx(
-                                        "kcButtonClass",
-                                        "kcButtonPrimaryClass",
-                                        "kcButtonLargeClass"
-                                    )}
+                                    className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonLargeClass")}
                                     name="accept"
                                     id="kc-login"
                                     type="submit"
                                     value={msgStr("doYes")}
                                 />
                                 <input
-                                    className={kcClsx(
-                                        "kcButtonClass",
-                                        "kcButtonDefaultClass",
-                                        "kcButtonLargeClass"
-                                    )}
+                                    className={kcClsx("kcButtonClass", "kcButtonDefaultClass", "kcButtonLargeClass")}
                                     name="cancel"
                                     id="kc-cancel"
                                     type="submit"

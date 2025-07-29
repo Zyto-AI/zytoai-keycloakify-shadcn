@@ -3,9 +3,7 @@ import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../../KcContext";
 import type { I18n } from "../../i18n";
 
-export default function FrontchannelLogout(
-    props: PageProps<Extract<KcContext, { pageId: "frontchannel-logout.ftl" }>, I18n>
-) {
+export default function FrontchannelLogout(props: PageProps<Extract<KcContext, { pageId: "frontchannel-logout.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
 
     const { logout } = kcContext;
@@ -32,19 +30,12 @@ export default function FrontchannelLogout(
                 {logout.clients.map(client => (
                     <li key={client.name}>
                         {client.name}
-                        <iframe
-                            src={client.frontChannelLogoutUrl}
-                            style={{ display: "none" }}
-                        />
+                        <iframe src={client.frontChannelLogoutUrl} style={{ display: "none" }} />
                     </li>
                 ))}
             </ul>
             {logout.logoutRedirectUri && (
-                <a
-                    id="continue"
-                    className="btn btn-primary"
-                    href={logout.logoutRedirectUri}
-                >
+                <a id="continue" className="btn btn-primary" href={logout.logoutRedirectUri}>
                     {msg("doContinue")}
                 </a>
             )}

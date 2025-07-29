@@ -4,10 +4,7 @@ import { KcContext } from "../../KcContext";
 import type { I18n } from "../../i18n";
 
 export default function LoginOauth2DeviceVerifyUserCode(
-    props: PageProps<
-        Extract<KcContext, { pageId: "login-oauth2-device-verify-user-code.ftl" }>,
-        I18n
-    >
+    props: PageProps<Extract<KcContext, { pageId: "login-oauth2-device-verify-user-code.ftl" }>, I18n>
 ) {
     const { kcContext, i18n, doUseDefaultCss, classes, Template } = props;
     const { url } = kcContext;
@@ -35,10 +32,7 @@ export default function LoginOauth2DeviceVerifyUserCode(
             >
                 <div className={kcClsx("kcFormGroupClass")}>
                     <div className={kcClsx("kcLabelWrapperClass")}>
-                        <label
-                            htmlFor="device-user-code"
-                            className={kcClsx("kcLabelClass")}
-                        >
+                        <label htmlFor="device-user-code" className={kcClsx("kcLabelClass")}>
                             {msg("verifyOAuth2DeviceUserCode")}
                         </label>
                     </div>
@@ -63,11 +57,7 @@ export default function LoginOauth2DeviceVerifyUserCode(
                     <div id="kc-form-buttons" className={kcClsx("kcFormButtonsClass")}>
                         <div className={kcClsx("kcFormButtonsWrapperClass")}>
                             <input
-                                className={kcClsx(
-                                    "kcButtonClass",
-                                    "kcButtonPrimaryClass",
-                                    "kcButtonLargeClass"
-                                )}
+                                className={kcClsx("kcButtonClass", "kcButtonPrimaryClass", "kcButtonLargeClass")}
                                 type="submit"
                                 value={msgStr("doSubmit")}
                             />
