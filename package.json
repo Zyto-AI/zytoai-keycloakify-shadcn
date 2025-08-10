@@ -1,6 +1,6 @@
 {
     "name": "zytoai-keycloakify-shadcn",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "description": "Keycloakify Webpack Starter",
     "homepage": "https://nima70.github.io/keycloakify-tailwind-shadcn/storybook/",
     "repository": {
@@ -20,6 +20,11 @@
         "format": "prettier . --write"
     },
     "keycloakify": {
+        "themeName": "zytoai-keycloakify-shadcn",
+        "themeDisplayName": "ZytoAI Shadcn",
+        "themeVersion": "0.0.1",
+        "themeDescription": "A Keycloak theme using Keycloakify, Tailwind CSS, and Shadcn UI components.",
+        "groupId": "ai.zytoai.keycloakify.zytoai-shadcn",
         "accountThemeImplementation": "none",
         "projectBuildDirPath": "build",
         "staticDirPathInProjectBuildDirPath": "static",
