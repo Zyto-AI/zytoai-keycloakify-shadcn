@@ -13,6 +13,7 @@ import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../components/ui/dropdown-menu";
 import { useInitialize } from "keycloakify/login/Template.useInitialize";
 import { kcSanitize } from "keycloakify/lib/kcSanitize";
+import { PUBLIC_URL } from "keycloakify/PUBLIC_URL";
 
 export function Template(props: TemplateProps<KcContext, I18n>) {
     const {
@@ -177,11 +178,21 @@ export function Template(props: TemplateProps<KcContext, I18n>) {
         );
     };
     return (
-        <div className="bg-background  min-h-screen   flex flex-col items-center justify-center  prose dark:prose-invert max-w-none">
-            <div id="kc-header-wrapper" className="text-center text-foreground hide md:visible">
-                {msgStr("loginTitleHtml", realm.displayNameHtml)}
+        <div className="bg-background  min-h-screen flex flex-col items-center justify-center prose dark:prose-invert max-w-none">
+            <div id="kc-header-wrapper" className="text-center text-foreground  md:visible">
+                <img
+                    src={`${PUBLIC_URL}/logos/Web/zytoai-logo-color-optimized.svg`}
+                    width={64}
+                    className="mx-auto m-0"
+                    alt="ZytoAI" />
+                <div
+                    className="mt-2 font-satoshi font-bold"
+                >
+                    Zyto AI
+                    {/* {msgStr("loginTitleHtml", realm.displayNameHtml)} */}
+                </div>
             </div>
-            <Card className="py-0 px-3  md:-[40rem] shadow-2xl w-full min-h-screen  md:w-[30rem] sm:min-h-fit ">
+            <Card className="py-0 px-3  md:-[60rem] shadow-2xl w-full min-h-screen  md:w-[40rem] sm:min-h-fit ">
                 <CardContent className="space-y-8 pb-5 ">
                     <div className="flex justify-end space-x-4 pt-2">
                         {languageSelector()}
