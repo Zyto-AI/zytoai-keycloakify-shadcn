@@ -1,0 +1,108 @@
+name: Release Keycloakify JARs
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (e.g. v1.2.3)"
+        required: true
+        default: "v0.0.0"
+
+env:
+  REGISTRY: registry.digitalocean.com
+  DOCR_REGISTRY: ${{ secrets.DOCR_REGISTRY }} # e.g. zytoai
+  IMAGE_NAME: ${{ secrets.DOCR_REPO }}        # e.g. keycloak
+
+permissions:
+  contents: write   # to create GitHub Release
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Resolve ref
+        id: ref
+        run: |
+          if [ -n "${{ github.ref_name }}" ] && [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "TAG=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          else
+            echo "TAG=${{ inputs.tag }}" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.ref.outputs.TAG }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: Install deps
+        run: yarn install --frozen-lockfile
+
+      - name: Build theme (Keycloakify)
+        run: |
+          yarn prebuild
+          yarn build-keycloak-theme
+
+      - name: Archive JARs
+        run: |
+          ls -la build_keycloak || true
+          mkdir -p release
+          cp build_keycloak/*.jar release/
+          # Optional: checksum
+          # (cd release && for f in *.jar; do sha256sum "$f" > "$f.sha256"; done)
+
+      - name: Upload JARs as artifact (CI)
+        uses: actions/upload-artifact@v4
+        with:
+          name: keycloak-theme-jars
+          path: release/*
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ref.outputs.TAG }}
+          name: Keycloakify Theme ${{ steps.ref.outputs.TAG }}
+          draft: false
+          prerelease: false
+          files: |
+            release/*.jar
+            release/*.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_TOKEN }}
+
+      - name: Docker login to DOCR
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Set image tags
+        id: tags
+        run: |
+          echo "TAG=${GITHUB_REF_NAME}" >> $GITHUB_OUTPUT
+          echo "LATEST=latest" >> $GITHUB_OUTPUT
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build & Push image (build-from-repo)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile.keycloak
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.DOCR_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.TAG }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.DOCR_REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.DOCR_REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
+

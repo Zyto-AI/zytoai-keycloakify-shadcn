@@ -1,0 +1,7 @@
+node_modules
+dist
+dist_keycloak
+build
+build_keycloak
+# IMPORTANT: Make sure `.gitignore` is **not** listed
+# in your .dockerignore file
