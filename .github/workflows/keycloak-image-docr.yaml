@@ -2,17 +2,27 @@ name: Build & Push Keycloak (DOCR)
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main, prereleased, released ]
   workflow_dispatch:
-
-env:
-  REGISTRY: registry.digitalocean.com
-  IMAGE_NAME: ${{ secrets.DOCR_REPO }} # e.g. auth-svc/keycloak
-  DOCR_REGISTRY: ${{ secrets.DOCR_REGISTRY }} # e.g. zytoai
 
 jobs:
   build-push:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - branch: main
+            env: dev
+            tag: latest-dev
+          - branch: prereleased
+            env: stage
+            tag: latest-stage
+          - branch: released
+            env: prod
+            tag: latest
+    if: github.ref_name == matrix.branch
+
+    environment: ${{ matrix.env }}
     steps:
       - uses: actions/checkout@v4
 
@@ -21,7 +31,7 @@ jobs:
         run: |
           SHA_TAG=${GITHUB_SHA::7}
           echo "TAG_SHA=${SHA_TAG}" >> $GITHUB_OUTPUT
-          echo "TAG_LATEST=latest-dev" >> $GITHUB_OUTPUT
+          echo "TAG_LATEST=${{ matrix.env }}" >> $GITHUB_OUTPUT
 
       - name: Login to DigitalOcean
         uses: digitalocean/action-doctl@v2
@@ -42,7 +52,7 @@ jobs:
           file: docker/Dockerfile.keycloak
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.DOCR_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG_SHA }}
-            ${{ env.REGISTRY }}/${{ env.DOCR_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG_LATEST }}
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.DOCR_REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache
-          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.DOCR_REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
+            registry.digitalocean.com/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:${{ steps.vars.outputs.TAG_SHA }}
+            registry.digitalocean.com/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:${{ steps.vars.outputs.TAG_LATEST }}
+          cache-from: type=registry,ref=registry.digitalocean.com/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:buildcache
+          cache-to: type=registry,ref=registry.digitalocean.com/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:buildcache,mode=max
