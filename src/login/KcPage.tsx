@@ -39,6 +39,8 @@ import WebauthnRegister from "./pages/WebauthnRegister";
 import LoginOauth2DeviceVerifyUserCode from "./pages/LoginOauth2DeviceVerifyUserCode";
 import LoginRecoveryAuthnCodeConfig from "./pages/LoginRecoveryAuthnCodeConfig";
 import LoginRecoveryAuthnCodeInput from "./pages/LoginRecoveryAuthnCodeInput";
+import { getIsDark } from "../shared/isDark";
+import { useEffect } from "react";
 const UserProfileFormFields = lazy(() => import("./UserProfileFormFields"));
 
 // Base component to render DefaultPage
@@ -69,6 +71,15 @@ const doMakeUserConfirmPassword = true;
 export default function KcPage(props: { kcContext: KcContext }) {
     const kcContext = props.kcContext; // Get the `legacy` flag as a prop
     const { i18n } = useI18n({ kcContext });
+
+    // Automatically set theme based on getIsDark()
+    useEffect(() => {
+        if (getIsDark()) {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
+    }, []);
 
     return (
         <Suspense>
