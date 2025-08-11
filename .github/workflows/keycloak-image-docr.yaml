@@ -20,7 +20,7 @@ jobs:
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DO_TOKEN }}
-      - run: doctl registry login --expiry-seconds 600
+      - run: doctl registry login --expiry-seconds 6000
 
       - uses: docker/setup-buildx-action@v3
 
@@ -31,8 +31,8 @@ jobs:
           file: docker/Dockerfile.keycloak
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:latest-dev
             ${{ env.REGISTRY }}/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:latest-dev
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:buildcache
           cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:buildcache,mode=max
 
