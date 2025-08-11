@@ -6,20 +6,32 @@ on:
   workflow_dispatch:
 
 jobs:
+  prepare:
+    name: Prepare matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set.outputs.matrix }}
+    steps:
+      - name: Set matrix JSON
+        id: set
+        run: |
+          # Define your environments/branches here
+          MATRIX_JSON='[
+            {"branch":"main",        "envname":"dev",  "tag":"latest-dev"},
+            {"branch":"prereleased", "envname":"stage","tag":"latest-stage"},
+            {"branch":"released",    "envname":"prod", "tag":"latest"}
+          ]'
+          echo "matrix=${MATRIX_JSON}" >> "$GITHUB_OUTPUT"
+
   build-push:
     runs-on: ubuntu-latest
+    needs: prepare
+    # Expand the matrix prepared above
     strategy:
+      fail-fast: false
       matrix:
-        include:
-          - branch: main
-            envname: dev
-            tag: latest-dev
-          - branch: prereleased
-            envname: stage
-            tag: latest-stage
-          - branch: released
-            envname: prod
-            tag: latest
+        include: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+
     if: ${{ github.ref_name == matrix.branch }}
 
     environment: ${{ matrix.envname }}
