@@ -12,17 +12,17 @@ jobs:
       matrix:
         include:
           - branch: main
-            env: dev
+            envname: dev
             tag: latest-dev
           - branch: prereleased
-            env: stage
+            envname: stage
             tag: latest-stage
           - branch: released
-            env: prod
+            envname: prod
             tag: latest
-    if: github.ref_name == matrix.branch
+    if: ${{ github.ref_name == matrix.branch }}
 
-    environment: ${{ matrix.env }}
+    environment: ${{ matrix.envname }}
     steps:
       - uses: actions/checkout@v4
 
@@ -31,7 +31,7 @@ jobs:
         run: |
           SHA_TAG=${GITHUB_SHA::7}
           echo "TAG_SHA=${SHA_TAG}" >> $GITHUB_OUTPUT
-          echo "TAG_LATEST=${{ matrix.env }}" >> $GITHUB_OUTPUT
+          echo "TAG_LATEST=${{ matrix.tag }}" >> $GITHUB_OUTPUT
 
       - name: Login to DigitalOcean
         uses: digitalocean/action-doctl@v2
