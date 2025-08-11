@@ -76,4 +76,6 @@ jobs:
           push: true
           tags: |
             registry.digitalocean.com/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:${{ github.ref_name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
