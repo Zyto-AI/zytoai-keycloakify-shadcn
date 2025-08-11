@@ -76,6 +76,4 @@ jobs:
           push: true
           tags: |
             registry.digitalocean.com/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:${{ github.ref_name }}
-          cache-from: type=registry,ref=registry.digitalocean.com/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:buildcache
-          cache-to: type=registry,ref=registry.digitalocean.com/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:buildcache,mode=max
 
