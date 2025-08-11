@@ -5,66 +5,79 @@ on:
     branches: [ main, prereleased, released ]
   workflow_dispatch:
 
+env:
+  REGISTRY: registry.digitalocean.com
+
 jobs:
-  prepare:
-    name: Prepare matrix
+  build-dev:
+    if: ${{ github.ref_name == 'main' }}
     runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set.outputs.matrix }}
-    steps:
-      - name: Set matrix JSON
-        id: set
-        run: |
-          # Define your environments/branches here
-          MATRIX_JSON='[
-            {"branch":"main",        "envname":"dev",  "tag":"latest-dev"},
-            {"branch":"prereleased", "envname":"stage","tag":"latest-stage"},
-            {"branch":"released",    "envname":"prod", "tag":"latest"}
-          ]'
-          echo "matrix=${MATRIX_JSON}" >> "$GITHUB_OUTPUT"
-
-  build-push:
-    runs-on: ubuntu-latest
-    needs: prepare
-    # Expand the matrix prepared above
-    strategy:
-      fail-fast: false
-      matrix:
-        include: ${{ fromJSON(needs.prepare.outputs.matrix) }}
-
-    if: ${{ github.ref_name == matrix.branch }}
-
-    environment: ${{ matrix.envname }}
+    environment: dev
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set tags
-        id: vars
-        run: |
-          SHA_TAG=${GITHUB_SHA::7}
-          echo "TAG_SHA=${SHA_TAG}" >> $GITHUB_OUTPUT
-          echo "TAG_LATEST=${{ matrix.tag }}" >> $GITHUB_OUTPUT
-
-      - name: Login to DigitalOcean
+      - name: Login to DO & DOCR
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DO_TOKEN }}
+      - run: doctl registry login --expiry-seconds 600
 
-      - name: Docker registry login
-        run: doctl registry login --expiry-seconds 600
+      - uses: docker/setup-buildx-action@v3
 
-      - name: Set up Buildx
-        uses: docker/setup-buildx-action@v3
-
-      # Build image that compiles theme from repo
-      - name: Build & Push (build-from-repo)
+      - name: Build & Push (dev)
         uses: docker/build-push-action@v6
         with:
           context: .
           file: docker/Dockerfile.keycloak
           push: true
           tags: |
-            registry.digitalocean.com/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:${{ steps.vars.outputs.TAG_SHA }}
-            registry.digitalocean.com/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:${{ steps.vars.outputs.TAG_LATEST }}
-          cache-from: type=registry,ref=registry.digitalocean.com/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:buildcache
-          cache-to: type=registry,ref=registry.digitalocean.com/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:buildcache,mode=max
+            ${{ env.REGISTRY }}/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:latest-dev
+            ${{ env.REGISTRY }}/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:${{ github.sha }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:buildcache,mode=max
+
+  build-stage:
+    if: ${{ github.ref_name == 'prereleased' }}
+    runs-on: ubuntu-latest
+    environment: stage
+    steps:
+      - uses: actions/checkout@v4
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_TOKEN }}
+      - run: doctl registry login --expiry-seconds 600
+      - uses: docker/setup-buildx-action@v3
+      - name: Build & Push (stage)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile.keycloak
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:latest-stage
+            ${{ env.REGISTRY }}/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:${{ github.sha }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:buildcache,mode=max
+
+  build-prod:
+    if: ${{ github.ref_name == 'released' }}
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - uses: actions/checkout@v4
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_TOKEN }}
+      - run: doctl registry login --expiry-seconds 600
+      - uses: docker/setup-buildx-action@v3
+      - name: Build & Push (prod)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile.keycloak
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:latest
+            ${{ env.REGISTRY }}/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:${{ github.sha }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:buildcache,mode=max
